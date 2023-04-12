@@ -187,64 +187,12 @@ We will run the following commands against the QMHA Queue Manager from lab 1.
 Now every message put to the **SOURCE** queue will have the same message put to the **STREAMQ** that we configured. 
 
 ![](./images/image2a.png)
-#### Put messages on the application queue
+
 	
-1. In the terminal window in the *./test* directory initiate the testing by running the following command:
+**Note:** that the *Streaming queue Quality of Service (QOS)* is set to  **Best effort**. The **BESTEF** quality of service is the default value and indicates that MQ should attempt
+to stream the duplicate messages to the stream queue but that it should deliver the original message to *SOURCE* even if there is a problem delivering the duplicate. 
 
-	```sh
-	./sendMessage.sh
-	```
-	
-	The script will then connect to MQ and start sending messages incessantly. Leave this window open to keep sending messages.
-	
-	*sendMessage.sh* uses the amqsphac sample application shipped with MQ to put some messages to the application queue *APPQ*. 
-	
-   **The script will not put any messages directly to
-MY.LOG.QUEUE – the queue manager will do that for us.**
-	
-	![](./images/image43.png)
-
-1. After a number of messages have been put, end the script with <CTRL-C>. Leave the terminal window open.
-
-#### Check to see if messages are on app queue and streaming queue
-		
-1. Return to the browser where the MQ Console is running. Click *Manage* > *Queues*. Scroll down if necessary to see all queues. Compare the number of messages for **APPQ** to the number of messages for its streaming queue **MY.LOG.QUEUE**. They should be the same.
-
-	Note that even though we didn’t put any messages to *MY.LOG.QUEUE* it has the same number of messages on it as *APPQ*. The stream queue feature has taken a copy of each message we put to *APPQ* and streamed it to *MY.LOG.QUEUE*.
-
-	![](./images/image44.png)
-
-1. Open another command window, navigate to */home/student/mqoncp4i-master/MQonCP4I/streamq/test* directory and run the following command:
-
-	```sh
-	./getMessage.sh
-	```
-	
-	![](./images/image45.png)
-	
-	When all messages have been read, end the script with <CTRL-C>. Leave the terminal window open.
-	
-1. Click *Storage* then *Edit*. 
-
-	![](./images/image56.png)
-	
-	 Note that the *Streaming queue Quality of Service (QOS)* is set to  **Best effort**. The **BESTEF** quality of service is the default value and indicates that MQ should attempt
-to stream the duplicate messages to the stream queue but that it should deliver the original message to *APPQ* even if there is a problem delivering the duplicate. 
-
-	This quality-of-service is best suited to applications where you want to make sure that the original behavior of the application is not affected by the stream queue feature. In this mode a putting application will never receive an error from the MQPUT API call due to an error with the streaming feature.
-
-#### Change quality of service on streaming queue to must dup
-
-1. Steam queues offer a second quality-of-service, **MUSTDUP** (must duplicate). When MUSTDUP is used, MQ will either deliver both messages, or neither
-of them. If there is a problem delivering the duplicate to the stream queue then the original message will not be delivered to the application queue and the
-putting application will receive an error reason code.
-Let’s change our *APPQ* to use the MUSTDUP quality of service and see what affect that has.
-
-	Click the dropdown for *Streaming queue QOS* and select **Must duplicate**. Click *Save*. 
-	
-	![](./images/image57.png)
-
-
+This quality-of-service is best suited to applications where you want to make sure that the original behavior of the application is not affected by the stream queue feature. In this mode a putting application will never receive an error from the MQPUT API call due to an error with the streaming feature.
 ## Testing the SteamQ using HA sample programs
 
 We will use the same sample programs that are provided with MQ, which we used in lab 1.  
@@ -253,10 +201,11 @@ We will use the same sample programs that are provided with MQ, which we used in
 * **amqsmhac** - copies messages from one queue to another with a default wait interval of 15 minutes after the last message that is received before the program finishes. This will run on **rdqm2**.
 * **amqsghac** - gets messages from a queue and displays events sent to its event handler. This will run on **rdqm1**.
 
-
 ### Start the HA sample programs
 
 The easiest way to configure access to the queue manager from the sample programs is to use the MQSERVER environment variable. Again, as there are 3 possible nodes where our queue manager could run, each needs to be specified, along with the listener port for the queue manager. 
+
+**NOTE:** If you are copying the command snippets from this lab guide and pasting them in the terminal windows: Beware that if the command does not work it may be that the copy assumes a long or double hyphen instead of a single hyphen. Just try overtyping the hyphen with the regular hyphen.
 
 1. On **rdqm1**, in the user ibmuser terminal window, enter:
 	
@@ -270,8 +219,6 @@ The easiest way to configure access to the queue manager from the sample program
 	cd /opt/mqm/samp/bin
 	./amqsghac TARGET QMHA
 	```
-
-	![](./images/image237.png)
 	
 	Later, this will display the messages generated by amqsphac on rdqm3.
 
@@ -284,17 +231,14 @@ The easiest way to configure access to the queue manager from the sample program
 	```
 1. Change directory to **/opt/mqm/samp/bin** and run the command: **amqsmhac -s SOURCE -t TARGET -m QMHA**
 
-
 	```
 	cd /opt/mqm/samp/bin
 	./amqsmhac -s SOURCE -t TARGET -m QMHA
 	```	
-	
-	![](./images/image238.png)
+	This will process messages put to *SOURCE* queue and put to *TARGET* queue. 
 	
 	**Leave this command to run!**
 	
-**NOTE:** If you are copying the command snippets from this lab guide and pasting them in the terminal windows: Beware that if the command does not work it may be that the copy assumes a long or double hyphen instead of a single hyphen. Just try overtyping the hyphen with the regular hyphen.
 	
 1. Now switch to **rdqm3**. As before open a new terminal window. As the user ibmuser enter:
 
@@ -311,36 +255,94 @@ The easiest way to configure access to the queue manager from the sample program
 	
 	![](./images/image239.png)
 	
-	**Leave this command to run!**
+Let this run and produce some messages (around 10) and then do Ctrl-C to exit program.   
 
-1. Confirm that these messages are also being displayed on **rdqm1**.
+7. Confirm that these messages are also being displayed on **rdqm1**.
 
 ![](./images/image240.png)
 
-![](./images/image241.png)
+8. Now run the following command for the *SOURCE* queue and you should not see any messages since we process them already.
+```
+	./amqsbcg SOURCE QMHA | grep "message number"
+```
 
-![](./images/image241a.png)
-
-![](./images/image242.png)
-	
+9.Now run the following command for the *STREAMQ* queue and you should see all the messages that were copy from the *SOURCE* queue.  
+```
+	./amqsbcg STREAMQ QMHA | grep "message number"
+```
 ![](./images/image243.png)
-	
+
+10. Now you can clear the *STREAMQ* queue by running the following command. 
+```
+	./amqsghac STREAMQ QMHA
+```
 ![](./images/image244.png)
 	
-**Note:** At this stage, the queue manager is running on the primary node (rdqm1) and each sample program is able to communicate with it, using the first location specified in the MQSERVER environment variable:
+**Note** that even though we didn’t put any messages to *STREAMQ* it has the same number of messages that we processed. The stream queue feature has taken a copy of each message we put to *SOURCE* and streamed it to *STREAMQ*.
 
-CHANNEL1/TCP/**10.0.1.1(1500)**,10.0.1.2(1500),10.0.1.3(1500)
+## Cleanup environment 
+
+### Stop and remove RDQMs
+
+1. Stop the sample program on each node by entering *ctrl-c* in the terminal window.
+
+	![](./images/image264.png)
+	
+1. On **rdqm3**, open a terminal window and stop running queue managers. Issue the following commands. Your displays and queue managers may not match the screenshots. Substitute your queue managers.
+
+	```
+	dspmq -o all 
+	```
+	
+	```
+	endmqm QMHA
+	```
+		
+	![](./images/image257.png)
+	
+1. Delete the queue manager *QMHA* on the primary node **rdqm3**. 
+
+	```
+	sudo dltmqm QMHA
+	```
+	
+	![](./images/image258.png)
+
+1. Delete the secondary queue managers on **rdqm2** and **rdqm1** per instructions in the output messages from previous commands. 
+
+	On **rdqm2** and **rdqm1**, delete the secondary queue manager *QMHA* with the following command:
+	
+	```
+	sudo dltmqm QMHA
+	```
+
+	![](./images/image259.png)
+	![](./images/image260.png)	
+	
+### Delete HA Cluster	
+
+1. Still on **rdqm1** unconfigure (delete) the Pacemaker HA cluster.
 
 
+	```
+	sudo rdqmadm -u
+	```
+	
+	![](./images/image261.png)
+	
+1. Delete the pacemaker HA cluster on the secondary nodes **rdqm2** and **rdqm3** per instructions in the output messages from previous commands. 
 
+	On **rdqm2** and **rdqm3**, unconfigure the HA cluster. 
+		
+	```
+	sudo rdqmadm -u
+	```
 
-
-
-
-
-
+	![](./images/image262.png)
+	![](./images/image263.png)
+	
 ## Congratulations
 
-You have completed this lab Streaming Queue for MQ on CP4I.
+You have completed this lab Streaming Queue for MQ.
 
-[Return MQ CP4I Menu](mq_cp4i_pot_overview.html)
+[Return to Main Menu](../index.md)

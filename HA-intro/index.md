@@ -895,68 +895,7 @@ It is possible to associate a floating IP address with an RDQM so that it is not
 	
 1. When completed testing, stop (with ctrl-C) the HA sample programs that are currently running on each of the nodes. 
 
-## Cleanup environment 
 
-### Stop and remove RDQMs
-
-1. Stop the sample program on each node by entering *ctrl-c* in the terminal window.
-
-	![](./images/image264.png)
-	
-1. On **rdqm3**, open a terminal window and stop running queue managers. Issue the following commands. Your displays and queue managers may not match the screenshots. Substitute your queue managers.
-
-	```
-	dspmq -o all 
-	```
-	
-	```
-	endmqm QMHA
-	```
-		
-	![](./images/image257.png)
-	
-1. Delete the queue manager *QMHA* on the primary node **rdqm3**. 
-
-	```
-	sudo dltmqm QMHA
-	```
-	
-	![](./images/image258.png)
-
-1. Delete the secondary queue managers on **rdqm2** and **rdqm1** per instructions in the output messages from previous commands. 
-
-	On **rdqm2** and **rdqm1**, delete the secondary queue manager *QMHA* with the following command:
-	
-	```
-	sudo dltmqm QMHA
-	```
-
-	![](./images/image259.png)
-	![](./images/image260.png)	
-	
-### Delete HA Cluster	
-
-1. Still on **rdqm1** unconfigure (delete) the Pacemaker HA cluster.
-
-
-	```
-	sudo rdqmadm -u
-	```
-	
-	![](./images/image261.png)
-	
-1. Delete the pacemaker HA cluster on the secondary nodes **rdqm2** and **rdqm3** per instructions in the output messages from previous commands. 
-
-	On **rdqm2** and **rdqm3**, unconfigure the HA cluster. 
-		
-	```
-	sudo rdqmadm -u
-	```
-
-	![](./images/image262.png)
-	![](./images/image263.png)
-	
-## CONGRATULATIONS! 
 ### You have completed this hands-on lab.
 
 You have created replicated data queue managers to provide high availability for IBM MQ, and you have tested failing over. 

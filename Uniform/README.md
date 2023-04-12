@@ -22,6 +22,8 @@ d) MQ v9.3.1
 ## 3. Setup
 
 ### 3.1 Create drbdpool
+**NOTE:** For this lab environment the following commands have already been done for you.  This is hear for reference for you. 
+
 ```
 $ lsblk (Verify the second disk (xvdc) is available)
 $ pvcreate /dev/xvdc
@@ -39,7 +41,8 @@ Verify pv, and vg are created successfully.
 ```
 
 ### 3.2 File/Limits Configuration
-Repeat the below commands on each Virtual Machine.<br>
+
+**NOTE:** For this lab environment the following commands have already been done for you.  This is hear for reference for you.<br>
 ```
 $ sudo vi /etc/sysctl.conf
     fs.file-max=524288
@@ -66,26 +69,9 @@ mqm             soft    nofile          10240
 $ sudo su -
 $ echo 32768 > /proc/sys/kernel/threads-max
 ```
-
-### 3.3 Users & Permissions
-
-```
-adduser -m aceadmin
-passwd aceadmin
-usermod -a -G mqm,haclient aceadmin
-
-$ visudo (add below line on all 3 nodes)
-mqm ALL=(ALL) NOPASSWD: ALL
-aceadmin ALL=(ALL) NOPASSWD: ALL
-
-$ su - aceadmin
-$ vi .bash_profile
-Add the below.
-set -o vi
-export PATH=$PATH:/opt/mqm/bin:/opt/mqm/samp/bin:
-```
-
 ### 3.4 MQ installation
+
+**NOTE:** For this lab environment the following commands have already been done for you.  This is hear for reference for you.<br>
 Upload MQ Software to the Virtual Machine.<br>
 
 ```
@@ -144,16 +130,19 @@ rdqmstatus -n
 ```
 
 ### 4.3 Create RDQM Queue Managers
-Now download the **PING_Basic_PoT_PIF.zip** 
-    Click here and save the zip file - [PING_Basic_PoT_PIF.zip](PING_Basic_PoT_PIF.zip)
+Now download the **AutoCluster.ini** file 
+    Click here and save the file - [AutoCluster.ini](./config/AutoCluster.ini)
+
+Now download the **UniCluster.ini** file 
+    Click here and save the file - [UniCluster.mqsc](./config/UniCluster.mqsc)
     
-Copy AutoCluster.ini, UniCluster.mqsc files from github config folder to /var/mqm/xuniclus. <br>
+Copy AutoCluster.ini, UniCluster.mqsc files from github config folder to /var/mqm/xunicluster. <br>
 ```
 As root;
-mkdir /var/mqm/xunisclus
-cp AutoCluster.ini /var/mqm/xuniclus
-cp UniCluster.ini /var/mqm/xuniclus
-chown -R mqm:mqm /var/mqm/xuniclus
+mkdir /var/mqm/xuniscluster
+cp AutoCluster.ini /var/mqm/xunicluster
+cp UniCluster.ini /var/mqm/xunicluster
+chown -R mqm:mqm /var/mqm/xunicluster
 ```
 
 Update with the internal IP addresses in AutoCluster.ini <br>
