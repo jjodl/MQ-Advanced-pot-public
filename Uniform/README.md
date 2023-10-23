@@ -93,7 +93,29 @@ $ yum install Advanced/RDQM/MQSeriesRDQM* -y
 
 ## 4. Uniform Cluster Configuration 
 
-### 4.1 Update rdqm.ini
+### 4.1 Update firewall rules	
+
+1. On each of the **nodes**, open the firewall ports defined (1601,1602,1603) for the queue managers.
+
+
+```
+sudo firewall-cmd  --add-port=1601/tcp --add-port=1602/tcp --add-port=1603/tcp
+```
+
+![](./images/image235a.png)
+	
+2. To verify the ports are now open, enter the following command: 
+
+	```
+	sudo firewall-cmd --list-ports
+	```
+
+	Results should look like this:
+	
+	![](./images/image236a.png)
+	
+1. Don't forget, each node must have these ports opened in the firewall.
+### 4.2 Update rdqm.ini
 
 Repeat this on all 3 Virtual Machines
 ```
@@ -118,7 +140,7 @@ Node:
 #  DR_Replication=
 ```
 
-### 4.2 Initialize RDQM
+### 4.3 Initialize RDQM
 
 ```
 sudo /opt/mqm/bin/rdqmadm -c (repeat on all 3 nodes)
@@ -128,8 +150,23 @@ rdqmstatus -n
  Node rh02.ibm.local is online
  Node rh03.ibm.local is online
 ```
+### 4.4 Download artifacts for MQ on RDQM PoT
 
-### 4.3 Create RDQM Queue Managers
+Go to the Windows image you have opened as part of the MQ Advanced POT 
+
+1. Open a Firefox browser tab and navigate to [Github MQonRDQM](https://github.com/jjodl/mqonrdqm).
+
+	![](./images/image108.png)
+	
+1. Click *Code* and select *Download zip*.
+
+	![](./images/image109.png)
+
+1. Click *Save file* radio button then click *OK*.
+
+	![](./images/image110.png)
+	
+### 4.5 Create RDQM Queue Managers
 Now download the **AutoCluster.ini** file 
     Click here and save the file - [AutoCluster.ini](./config/AutoCluster.ini)
 
@@ -164,7 +201,7 @@ crtmqm -sx -ii /var/mqm/xuniclus/AutoCluster.ini -ic /var/mqm/xuniclus/UniCluste
 
 ```
 
-### 4.4 Check Queue Managers Status
+### 4.5 Check Queue Managers Status
 
 ```
 $ dspmq
