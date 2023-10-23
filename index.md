@@ -15,11 +15,6 @@ An application developer has a choice of programming interfaces, and programming
 
 
 ## Lab section:
-Before starting the labs you should review the lab environment and the use of the VDI desktop you will be using along with the OCP cluster to complete the labs.<br>
-[*WorkShop 1:*](https://techzone.ibm.com/my/workshops/student/642ee57affb9a60017778383)
-
-[*WorkShop 2:*](https://techzone.ibm.com/my/workshops/student/64359e5062cce60016d749ab)
-
 
 |  Topic                                | Description                                                                
 |---------------------------------------|-----------------------------------------------------------------------------|
