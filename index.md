@@ -22,11 +22,11 @@ An application developer has a choice of programming interfaces, and programming
 |---------------------------------------|-----------------------------------------------------------------------------|   
 | [MQ Streaming queues](StreamQ/README.md)         | This section you will tap into the value of existing data flowing over MQ with zero impact to the existing applications or their messages, and without a need for re-architecture your message flows.
 |---------------------------------------|-----------------------------------------------------------------------------|     
-| [MQ Uniform Clusters](Uniform/README.md)         | This section you will see how Uniform clusters enables applications to be workload balanced across loosely coupled queue managers  
+| **MQ Uniform Clusters**         | **Being worked on** <br>This section you will see how Uniform clusters enables applications to be workload balanced across loosely coupled queue managers  
 |---------------------------------------|-----------------------------------------------------------------------------|  
 | [MQ & Aspera FASP.IO Gateway](Faspio/index.md)       | This section you will see the purpose of this lab to demonstrate the benefit of using Aspera fasp.io Gateway with IBM MQ over TCP.  
 |---------------------------------------|-----------------------------------------------------------------------------|
-| [MQ Managed File Transfering (MFT) & Aspera FASP.IO Gateway](MFTFaspio/index.md)       | This section you will see in this lab to demonstrate the benefit of using Aspera fasp.io Gateway with IBM MQFTE over TCP.  
+| **MQ Managed File Transfering (MFT) & Aspera FASP.IO Gateway**      | **Being worked on** <br>This section you will see in this lab to demonstrate the benefit of using Aspera fasp.io Gateway with IBM MQFTE over TCP.  
 |---------------------------------------|-----------------------------------------------------------------------------|   
 | [MQ RDQM DR](DR/index.md)          | You can create a primary instance of a disaster recovery queue manager running on one server, and a secondary instance of the queue manager on another server that acts as the recovery node. Data is replicated between the queue manager instances.
 |---------------------------------------|-----------------------------------------------------------------------------|
