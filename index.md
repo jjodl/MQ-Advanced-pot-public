@@ -19,7 +19,7 @@ You will each have a unique link to access your own POT environment.
 
 ***Attendee URL:***
 Attendees can use this link to view event information as well as information about logging into their personal environment.
-https://techzone.ibm.com/my/workshops/student/6545a6d2fa3f390016a2cd2f
+[https://techzone.ibm.com/my/workshops/student/6545a6d2fa3f390016a2cd2f](https://techzone.ibm.com/my/workshops/student/6545a6d2fa3f390016a2cd2f)
 
 ***Password:***
 For security reasons, attendees will need to enter the password/access code passw0rd to view the Attendee URL page.
@@ -27,7 +27,7 @@ For security reasons, attendees will need to enter the password/access code pass
 
 **Note:**
 If you don’t have an IBM id to access the lab environments, you can go to the following link to create a IBM id and once you do let me know and will add that to your link.
-https://www.ibm.com/account/reg/us-en/signup?formid=urx-19776
+[https://www.ibm.com/account/reg/us-en/signup?formid=urx-19776](https://www.ibm.com/account/reg/us-en/signup?formid=urx-19776)
  
 
 ## Lab section:
