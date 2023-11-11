@@ -4,18 +4,12 @@
 
 The purpose of this lab to demonostrate the benefit of using Aspera fasp.io Gateway with IBM MQ over TCP.
 
-At a high level, we will be using two VM's, one in Washington DC-United States, and another in London-United Kingdom.
+At a high level, we will be using two VM's, one in United States as LOCALQM, and another in different GEO as REMOTEQM.
 
 You will be testing two usecases. 
 <br>
 a) Send large messages with MQ with TCP <br>
 b) Send large messages with MQ with FASP over TCP
-<br>
-
-set firewall 
-
-<br>
-
 ## 2. MQ Messaging TCP/IP Setup and testing 
 
 ![](images/fasp-mq1.png)
@@ -163,7 +157,7 @@ set firewall
    **NOTE:** Check clock before blasting messages.
 
     ```
-    amqsblst LOCALQM REMOTE.TCP.IN -W -s 1048576  -c 1000
+    /opt/mqm/samp/bin/amqsblst LOCALQM REMOTE.TCP.IN -W -s 1048576  -c 1000
     ```
 1. WRITE DOWN THE TIME TAKEN TO TRANSFER 1000 MESSAGES TO REMOTEQM TCP.IN queue.
 
@@ -200,11 +194,11 @@ Now we will configure the **fasp.io** gateway to see the time it takes to move m
 1. Run the following commands on both the rdqm2 node and the VDI. 
 
     ```
-    systemctl enable faspio-gateway
+    sudo systemctl enable faspio-gateway
 
-    systemctl start faspio-gateway
+    sudo systemctl start faspio-gateway
 
-    systemctl status faspio-gateway
+    sudo systemctl status faspio-gateway
     ```
 
     **Note:** Make sure the fasp.io gateway is started successfully. 
@@ -236,9 +230,8 @@ Now we will configure the **fasp.io** gateway to see the time it takes to move m
     ```
 1. Copy and paste the followng commands.  
 
-    **NOTE** Make sure to change the conname IP address to match your VDI IP.
     ```
-    Define channel(LOCAL.REMOTE.FASP) chltype(sdr) conname('168.1.53.230(1520)') xmitq(REMOTE.FASP) 
+    Define channel(LOCAL.REMOTE.FASP) chltype(sdr) conname('10.0.0.2(1520)') xmitq(REMOTE.FASP) 
 
     DEF QLOCAL(REMOTE.FASP) USAGE(XMITQ) INITQ(SYSTEM.CHANNEL.INITQ) TRIGDATA(LOCAL.REMOTE.FASP)
 
@@ -257,31 +250,29 @@ Now we will configure the **fasp.io** gateway to see the time it takes to move m
 
 ### 5.2 Testing
 
-<table>
-    <thead>
-      <tr>
-        <th>LONDON</th>
-        <th>WASHINGTON</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>watch -n 1 'echo "dis qlocal(fasp.in) curdepth" | runmqsc QMLDND01'</td>
-            <td>amqsblst QMWDCD01 QR.LDN.FASP.IN -W -s 1048576  -c 1000
+1. Now we will setup a watch on the REMOTEQM on the VDI to monitor how long it takes to get messages. 
 
-watch -n 1 'echo "dis qlocal(xmitq.QMLDND01.FASP) curdepth" | runmqsc QMWDCD01'
-</td>
-        </tr>
-    </tbody>
-  </table>
+    ```
+    watch -n 1 'echo "dis qlocal(FASP.IN) curdepth" | runmqsc REMOTEQM'
+    ```
+      ![](images/fasp3.png)
 
+1. Now we will Blast 1000 messages (1MB each) on the rdqm2 LOCALQM.  
 
+   **NOTE:** Check clock before blasting messages.
+
+    ```
+    /opt/mqm/samp/bin/amqsblst LOCALQM REMOTE.FASP.IN -W -s 1048576  -c 1000
+    ```
+1. WRITE DOWN THE TIME TAKEN TO TRANSFER 1000 MESSAGES TO REMOTEQM FASP.IN queue.
+
+    **Note: Should be around 2:00 minutes. 
 
 <br>
 <b>Note: <br>
-WRITE DOWN THE TIME TAKEN TO TRANSFER 1000 MESSAGES TO LONDON FASP.IN queue. OBSERVE THE DIFFERENCE between a TCP Transfer & a FASP Transfer.</b><br>
+WRITE DOWN THE TIME TAKEN TO TRANSFER 1000 MESSAGES TO REMOTE FASP.IN queue. OBSERVE THE DIFFERENCE between a TCP Transfer & a FASP Transfer.</b><br>
 <br>
-You should see 60-65% better performance using Aspera fasp.io gateway.
+You should see 60-65% better performance using Aspera fasp.io gateway.  Also you will not saturate the network which can occur when running on TCP/IP
 <br>
 <br><br>
 
