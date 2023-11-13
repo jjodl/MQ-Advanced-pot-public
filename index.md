@@ -19,7 +19,7 @@ You will each have a unique link to access your own POT environment.
 
 ***Attendee URL:***
 Attendees can use this link to view event information as well as information about logging into their personal environment.
-[https://techzone.ibm.com/my/workshops/student/6545a6d2fa3f390016a2cd2f](https://techzone.ibm.com/my/workshops/student/6545a6d2fa3f390016a2cd2f)
+[New URL](https://techzone.ibm.com/my/workshops/student/654e96a4b535d30017efcf36)
 
 ***Password:***
 For security reasons, attendees will need to enter the password/access code passw0rd to view the Attendee URL page.
