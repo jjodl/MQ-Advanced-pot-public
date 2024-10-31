@@ -133,6 +133,11 @@ In this lab, instructions are provided to setup and test using the intermediate 
 
 ## Setup the environment (pre-configured on IBM TechZone):
 
+### The following are the Windows and Rhel userid / passwords
+
+* Windows:  techzone / IBMDem0s
+* Rhel:  ibmuser / engageibm
+
 In the TechZone environment, there are seven virtual machines: rdqm1, rdqm2, rdqm3, dr1, dr2, dr3, and mq-pot which currently should be in a powered on state. dr1, dr2, and dr3 will not be used in this lab, so you can ignore them for now. 
 
 1. Click the *VM Remote Console* button for **mq-pot**.
@@ -363,8 +368,7 @@ The DRBD and Pacemaker RPM packages are supplied on the IBM MQ media. You should
 	![](./images/image288.png)
 		
 	RDQM is now ready as it has been installed with the prereqs on all of the VMs.
-	
-### Configure the firewall
+### Configure the firewall (Do this section)
 
 Normally, the firewall is configured during the pre-req installations.  
 
@@ -391,7 +395,7 @@ Normally, the firewall is configured during the pre-req installations.
 	![](./images/image290a.png)
 	
 
-### Configure the cluster
+### Configure the cluster (Skip this section)
 
 The cluster must first be created, and then an RDQM instance defined containing one or more queue managers. The RDQM code expects the rdqm.ini file to be in the /var/mqm directory.
 
@@ -420,7 +424,7 @@ The cluster is defined using the rdqm.ini file. The /home/ibmuser/ directory con
 	**Hint:**  Use the putty windows for rdqm2 and rdqm3. You should have logged onto those VMs at the beginning of this lab.
 	
 	![](./images/image292a.png)
-	    
+### Continue the lab from here 
 1. Return to the primary node **rdqm1**. Enter the following command to see the options for the *rdqmadm* command:
 
 	```
